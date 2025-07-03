@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 var cors = require('cors')
-const env = require('dotenv').config()
+const env = require('dotenv').config('./.env')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser'); // Import body-parser
 const authRoutes = require('./Routes/Auth/auth')

@@ -62,6 +62,59 @@ router.post('/event/create', adminMiddleware, async (req, res) => {
 })
 
 
+router.get('/events/completed',adminMiddleware,async (req,res) => {
+    try {
+        const events = await Event.find({
+        dateTime: { $lte: new Date() }
+        }).sort({ dateTime: 1 }); 
+
+        res.status(200).json(events);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+})
+
+
+
+router.post('/event/create-multiple', adminMiddleware, async (req, res) => {
+    try{
+
+        let all = req.body.multiple
+
+        console.log(all[0])
+
+        for(let i=0;i<all.length;i++){
+            
+            const { title, description, dateTime, location } = all[i];
+
+            const admin = req.user
+            
+            if(!title || !description || !dateTime || !location) return res.status(400).json({'message':"Following fields are required - title, description, dateTime, location"})
+
+            const newEvent = new Event({
+                title:title,
+                description:description,
+                dateTime:new Date(dateTime),
+                location:location,
+                creator:admin.userId,
+                registeredStudents:[],
+                volunteerStudents:[],
+                tasks:[]
+            })        
+
+            await newEvent.save();
+
+            
+        }
+      
+        return res.status(200).json({message:"All events created"})
+            
+    }catch(err){
+        res.status(500).json({ message: err.message });
+    }
+})
+
+
 
 router.post('/event/update/:id', adminMiddleware, async (req, res) => {
     try{
@@ -86,17 +139,19 @@ router.post('/event/update/:id', adminMiddleware, async (req, res) => {
 
 router.post('/event/announcement/create',adminMiddleware,async (req,res)=>{
     try{
-        let {eventId, message, event_title,event_date} = req.body
+        let {event,message} = req.body
 
-        if(!eventId || !message || !event_title  || !event_date){
-            return res.status(400).json({message:"Following fields are required - eventID, message, event_title, event_date"})
+        
+
+        if(!event || !message){
+            return res.status(400).json({message:"Following fields are required - event, message"})
         }
 
         let newAnnouncements = new Announcement({
             message:message,
-            event_id:eventId,
-            event_title:event_title,
-            event_date:event_date,
+            event_id:event._id,
+            event_title:event.title,
+            event_date:event.dateTime,
             posted_date: new Date()
         })
 
@@ -107,7 +162,7 @@ router.post('/event/announcement/create',adminMiddleware,async (req,res)=>{
 
         
     }catch(err){
-        return res.status(500).json({message:"Error in creating in announcement"})
+        return res.status(500).json({message:"Error in creating in announcement", error:err})
     }
 })
 

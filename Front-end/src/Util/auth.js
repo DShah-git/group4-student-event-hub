@@ -17,8 +17,17 @@ export function getUserNameFromToken() {
 }
 
 
-export function getUserRoleFromToken() {
+export function getUserIdfromToken() {
+  const token = localStorage.getItem("token");
   
+  if (!token) return null;
+  try {
+    // JWT tokens are usually in the format header.payload.signature
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.userId
+  } catch (e) {
+    return null;
+  }
 }
 
 

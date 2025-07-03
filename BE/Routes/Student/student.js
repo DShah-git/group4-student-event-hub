@@ -2,17 +2,40 @@ const express = require('express');
 const Event = require('../../Models/events.model');
 const Announcement = require('../../Models/announcements.model')
 const studentMiddleware = require('../../Middlewares/studentAuth.middleware')
-
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 
 router.get('/events/upcoming',async (req,res) => {
     try {
+        
+        const token = req.header('x-auth');
+
+        let userId = ''
+
+        if(token){
+            let decoded = jwt.verify(token, process.env.JWT_SECRET);
+            userId = decoded.userId
+        }
+        
         const events = await Event.find({
         dateTime: { $gte: new Date() }
         }).sort({ dateTime: 1 }); 
 
-        res.status(200).json(events);
+       
+        const eventsWithFlags = events.map(event => {
+            const isStudentRegistered = event.registeredStudents && event.registeredStudents.some(s => s.studentID === userId);
+            const isStudentVolunteer = event.volunteerStudents && event.volunteerStudents.some(s => s.studentID === userId);
+           
+            const eventObj = event.toObject ? event.toObject() : { ...event };
+            return {
+                ...eventObj,
+                isStudentRegistered,
+                isStudentVolunteer
+            };
+        });
+
+        res.status(200).json(eventsWithFlags);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

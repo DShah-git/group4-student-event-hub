@@ -7,13 +7,11 @@ function App() {
   return (
     <div className="app-container"
     >
-      <Typography>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>
-        </Router>
-      </Typography>
+        </Router> 
     </div>
   );
 }
