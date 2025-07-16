@@ -1,0 +1,132 @@
+.page-container{
+    width: 100%;
+    margin:7rem 0rem;
+
+}
+
+.back-btn {
+  margin-bottom: 1.5rem;
+  background: none;
+  border: none;
+  color: #007185;
+  font-weight: 500;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s;
+  font-size: 1.2rem;
+}
+.back-btn:hover {
+  color: #004f63;
+  text-decoration: underline;
+}
+
+
+.triple-container{
+    width: 100%;
+    gap:1rem;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+
+.card-container{
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 10px;
+    padding:1rem;
+
+}
+
+.event-container{
+    flex-grow: 2;
+}
+
+.volunteer-container{
+    flex-grow: 1.5;
+    min-width: 300px;
+    max-width: 330px;
+    max-height: 550px;
+}
+
+.registered-container{
+    flex-grow: 1.5;
+    min-width: 300px;
+    max-width: 330px;
+    max-height: 550px;
+}
+
+h3{
+    padding:0;
+    margin:0;   
+}
+
+
+.student-names{
+    display: flex;
+    gap:0.5rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 1rem;
+}
+
+.student-name-card{
+    display: flex;
+    padding:1rem 1.5rem;
+    align-items: center;
+    gap:1rem;
+    background-color: rgba(0, 0, 0, 0.153);
+    border-radius: 10px;
+    width: calc(100% - 3rem);
+}
+
+.avatar{
+    width: 30px;
+    height: 30px;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+}
+
+.task-container{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+    border-radius: 10px;
+}
+
+.task-card{
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+    background-color: rgba(0, 0, 0, 0.153);
+    border-radius: 10px;
+    padding-bottom:1rem;
+}
+
+.tasks{
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+    margin:0 1rem;
+}
+.text{
+    padding:0.25rem;
+}
+
+.icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    aspect-ratio: 1/1;
+}
+
+.task{
+    display: flex;
+    gap:1rem;
+    align-items: center;
+}

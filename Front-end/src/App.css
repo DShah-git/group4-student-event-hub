@@ -1,7 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 .app-container {
-  width: 90%;
-  margin: auto;  
+  width: 80%;
+  margin: auto;
   padding-top: 1rem;
   display: flex;
   flex-direction: column;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+}
+
+.event-item {
+  margin-left: 2.4rem;
+  margin-top: 1rem;
+  font-size: 1.05rem;
+}
+
+.desc{
+  box-shadow: inset rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  padding:1rem;
+  border-radius: 10px;
+
+}
+
+.flex-icon {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
 }

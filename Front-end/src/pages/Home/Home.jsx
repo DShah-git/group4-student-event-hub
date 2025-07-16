@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div className="home-container">
 
-      <Navbar />
+     
       <div className="home-main-content">
         <div className="events-panel-wrapper">
           <EventsPanel />

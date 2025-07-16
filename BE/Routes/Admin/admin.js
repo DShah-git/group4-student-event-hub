@@ -81,7 +81,7 @@ router.post('/event/create-multiple', adminMiddleware, async (req, res) => {
 
         let all = req.body.multiple
 
-        console.log(all[0])
+
 
         for(let i=0;i<all.length;i++){
             
@@ -122,15 +122,23 @@ router.post('/event/update/:id', adminMiddleware, async (req, res) => {
         let event = req.body.event
 
         let eventUpdate = await Event.findByIdAndUpdate({_id:eventId},event,{new:true}) 
-        
-      
+
         if(eventUpdate){
+            
+            await Announcement.updateMany(
+                { event_id: eventId },
+                {
+                    $set: {
+                        event_title: eventUpdate.title,
+                        event_date: eventUpdate.dateTime
+                    }
+                }
+            );
+
             return res.send({message:"Event updated successfully",event:eventUpdate})
         }else{
             return res.status(400).send({message:"Could not process update"}) 
         }
-    
-            
     }catch(err){
         res.status(500).json({ message: err.message });
     }
@@ -195,7 +203,7 @@ router.get('/event/announcement/:id',adminMiddleware,async (req,res)=>{
      try{
         let eventId = req.params.id.toString();
 
-        let announcements = await Announcement.find({"event_id":eventId})
+        let announcements = await Announcement.find({"event_id":eventId}).sort({posted_date:-1})
 
 
         if(!announcements){

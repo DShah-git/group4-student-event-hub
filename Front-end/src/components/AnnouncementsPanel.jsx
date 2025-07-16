@@ -57,32 +57,36 @@ function AnnouncementsPanel() {
                 <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
                     Announcements
                 </Typography>
-                <Grid container direction="column" spacing={2}>
+                 
+                <Grid container direction="column" spacing={2}
+                    sx={{  borderRadius:"10px"}}
+                >
                     {announcements.map((a) => (
                         <Grid item key={a._id}>
                             <Card
                                 sx={{
                                     width: '100%',
                                     borderRadius: 2,
-                                    boxShadow: 3,
+                                    boxShadow:2,
                                     bgcolor: '#fff',
                                 }}
                             >
                                 <CardContent>
-                                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2', mb: 1 }}>
+                                    <Typography sx={{ fontWeight: 'bold', color: '#1976d2', mb: 1 }}>
                                         {a.event_title}
                                     </Typography>
-                                    <Box sx={{ display: 'flex', gap: 2, mb: 1, flexWrap: 'wrap' }}>
-                                        <Typography variant="body2" color="text.secondary">
-                                            <b>Event Date:</b> {formatToEST(a.event_date)}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            <b>Posted:</b> {getTimeAgo(a.posted_date)}
-                                        </Typography>
-                                    </Box>
+                                    
                                     <Typography  sx={{fontSize: '1.2rem', color: '#black'}}>
                                         {a.message}
                                     </Typography>
+                                    <Box sx={{ display: 'flex', gap: 2, mb: 1, flexWrap: 'wrap', marginTop:'1rem'}}>
+                                        <Typography sx={{ fontSize:'0.7rem' }}  color="text.secondary">
+                                            <b>Event Date:</b> {formatToEST(a.event_date)}
+                                        </Typography>
+                                        <Typography sx={{ fontSize:'0.7rem' }} color="text.secondary">
+                                            <b>Posted:</b> {getTimeAgo(a.posted_date)}
+                                        </Typography>
+                                    </Box>
                                 </CardContent>
                             </Card>
                         </Grid>

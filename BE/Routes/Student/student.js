@@ -59,16 +59,33 @@ router.get('/event/:id',async (req,res) => {
     try{
         let eventId = req.params.id.toString();
 
-        let event = await Event.findOne({"_id":eventId})
+        // Get userId from token if present
+        const token = req.header && req.header('x-auth');
+        let userId = '';
+        if(token){
+            try {
+                let decoded = jwt.verify(token, process.env.JWT_SECRET);
+                userId = decoded.userId;
+            } catch (e) {
+                userId = '';
+            }
+        }
 
+        let event = await Event.findOne({"_id":eventId})
 
         if(!event){
             return res.status(400).json({"message":"Could not find Event"})
         }
-        
-        return res.status(200).json({"message":"Event found",event:event})
-      
-            
+
+        // Add isStudentRegistered and isStudentVolunteer flags
+        const isStudentRegistered = event.registeredStudents && event.registeredStudents.some(s => s.studentID === userId);
+        const isStudentVolunteer = event.volunteerStudents && event.volunteerStudents.some(s => s.studentID === userId);
+
+        const eventObj = event.toObject ? event.toObject() : { ...event };
+        eventObj.isStudentRegistered = isStudentRegistered;
+        eventObj.isStudentVolunteer = isStudentVolunteer;
+
+        return res.status(200).json({"message":"Event found", event: eventObj})
     }catch(err){
         console.log(err)
         res.status(500).json({ message: "Error finding Event" });
@@ -160,12 +177,15 @@ router.get('/announcements', studentMiddleware, async (req,res)=>{
         let student = req.user
 
         let registeredOrVolunteerEvents = await Event.find({
-            dateTime: { $gte: new Date() },
-            $or: [
+           $and:[
+           { dateTime: { $gte: new Date() }},
+            {$or: [
                 { "registeredStudents.studentID":student.userId },
                 { "volunteerStudents.studentID":student.userId }
-            ]
+            ]}]
         }).select('_id')
+
+        
 
         if(!registeredOrVolunteerEvents){
             return res.status(400).json({message:"Error Finding Announcements"})
@@ -175,7 +195,7 @@ router.get('/announcements', studentMiddleware, async (req,res)=>{
 
         const announcements = await Announcement.find({
             event_id: { $in: registeredOrVolunteerEvents }
-        });
+        }).sort({posted_date:-1});
 
         if(!announcements){
             return res.status(400).json({message:"Error Finding Announcements"})
