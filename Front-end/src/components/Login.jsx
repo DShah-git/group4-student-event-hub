@@ -33,7 +33,8 @@ function Login() {
             })
             .catch(error => {
                 console.error("Login error:", error);
-                setError("An error occurred while logging in. Please try again.");
+
+                setError(error.response.data.message);
             });
         
     };

@@ -8,6 +8,7 @@ import Login from './pages/admin/login/login';
 import Adminhome from './pages/admin/home/home';
 import AdminEvent from './pages/admin/event/event';
 import CreateEvent from './pages/admin/createEvent/CreateEvent';
+import AdminProtectedRoutes from './components/AdminProtectedRoutes'
 
 function App() {
   return (
@@ -25,11 +26,27 @@ function App() {
             <Route path="/admin" element={<Login />} />
             <Route path="/admin/login" element={<Login />} />
 
-            <Route path="admin/home" element={<Adminhome/>}/>
-            <Route path="admin/events/:id" element={<AdminEvent/>}/>
-            <Route path="admin/events/update/:id" element={<UpdateEvent/>}/>
+            <Route path="admin/home" element={
+              <AdminProtectedRoutes>
+                <Adminhome/>
+              </AdminProtectedRoutes>
+            }/>
+            <Route path="admin/events/:id" element={
+              <AdminProtectedRoutes>
+                <AdminEvent/>
+              </AdminProtectedRoutes>
+            }/>
+            <Route path="admin/events/update/:id" element={
+              <AdminProtectedRoutes>
+                <UpdateEvent/>
+              </AdminProtectedRoutes>
+            }/>
 
-            <Route path="admin/events/new" element={<CreateEvent/>}/>
+            <Route path="admin/events/new" element={
+              <AdminProtectedRoutes>
+                <CreateEvent/>
+              </AdminProtectedRoutes>
+            }/>
             
  
           </Routes>
